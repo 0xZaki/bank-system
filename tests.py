@@ -1,6 +1,6 @@
 import unittest
 
-from bank_system import Customer, Bank
+from bank_system import Customer
 
 
 class TestCustomer(unittest.TestCase):
@@ -16,25 +16,34 @@ class TestCustomer(unittest.TestCase):
         self.assertEqual(self.customer.get_total_repayments(), 0)
 
     def test_borrow(self):
-        self.customer.borrow(1000, 0.1)
+        self.customer.borrow("1000", "0.1")
         self.assertEqual(self.customer.get_outstanding_debt(), 1100)
 
     def test_borrow_invalid_amount(self):
-        self.assertRaises(ValueError, self.customer.borrow, 0, 0.1)
+        self.assertRaises(ValueError, self.customer.borrow, "0", "0.1")
+
+    def test_borrow_invalid_interest_rate(self):
+        self.assertRaises(ValueError, self.customer.borrow, "1000", "test")
 
     def test_repay(self):
-        self.customer.borrow(1000, 0.1)
-        self.customer.repay(500)
+        self.customer.borrow("1000", "0.1")
+        self.customer.repay("500")
         self.assertEqual(self.customer.get_outstanding_debt(), 600)
         self.assertEqual(self.customer.get_total_repayments(), 500)
 
-    def test_repay_more_than_outstanding_debt(self):
-        self.customer.borrow(1000, 0.1)
-        self.assertRaises(ValueError, self.customer.repay, 1200)
-
     def test_repay_invalid_amount(self):
-        self.assertRaises(ValueError, self.customer.repay, 0)
+        self.assertRaises(ValueError, self.customer.repay, "0")
+
+    def test_repay_more_than_outstanding_debt(self):
+        self.customer.borrow("1000", "0.1")
+        self.assertRaises(ValueError, self.customer.repay, "1200")
+
+    def test_convert_to_decimal(self):
+        self.assertEqual(self.customer.convert_to_decimal("1000"), 1000)
+
+    def test_convert_to_decimal_invalid(self):
+        self.assertRaises(ValueError, self.customer.convert_to_decimal, "test")
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()
