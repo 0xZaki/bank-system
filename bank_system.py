@@ -56,6 +56,56 @@ class Customer:
         return self.__total_repayments
 
 
+class Bank:
+    """
+        A bank class that manages customers and their debts
+    """
+
+    def __init__(self) -> None:
+        self.customers = set()
+
+    def __validate_customer_exists(self, customer: Customer) -> None:
+        if customer not in self.customers:
+            raise ValueError("Customer does not exist")
+
+    def add_customer(self, customer: Customer) -> None:
+        """
+            add a customer to the bank
+        :param customer:
+        :return:
+        """
+        self.customers.add(customer)
+
+    def lend(self, customer: Customer, amount: str, interest_rate: str) -> None:
+        """
+            lend an amount to customer
+        :param customer:
+        :param amount:
+        :param interest_rate:
+        :return:
+        """
+        self.__validate_customer_exists(customer)
+        customer.borrow(amount, interest_rate)
+
+    def receive_repayment(self, customer: Customer, amount: str) -> None:
+        """
+            receive a repayment from customer
+        :param customer:
+        :param amount:
+        :return:
+        """
+        self.__validate_customer_exists(customer)
+        customer.repay(amount)
+
+    def get_customer_outstanding_debt(self, customer: Customer) -> Decimal:
+        self.__validate_customer_exists(customer)
+        return customer.get_outstanding_debt()
+
+    def get_customer_total_repayments(self, customer: Customer) -> Decimal:
+        self.__validate_customer_exists(customer)
+        return customer.get_total_repayments()
+
+
 if __name__ == '__main__':
     test_customer = Customer("test")
     test_customer.borrow(1000, 0.1)
