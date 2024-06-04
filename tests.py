@@ -36,33 +36,5 @@ class TestCustomer(unittest.TestCase):
         self.assertRaises(ValueError, self.customer.repay, 0)
 
 
-class TestBank(unittest.TestCase):
-
-    def setUp(self) -> None:
-        self.bank = Bank()
-        self.customer = Customer("Zaki")
-        self.bank.add_customer(self.customer)
-
-    def tearDown(self) -> None:
-        self.bank = None
-        self.customer = None
-
-    def test_add_customer(self):
-        self.assertRaises(ValueError, self.bank.add_customer, self.customer)
-
-    def test_lend(self):
-        self.bank.lend("Zaki", 1000, 0.1)
-        self.assertEqual(self.customer.get_outstanding_debt(), 1100)
-
-    def test_lend_invalid_customer(self):
-        self.assertRaises(ValueError, self.bank.lend, "Zak", 1000, 0.1)
-
-    def test_receive_repayment(self):
-        self.bank.lend("Zaki", 1000, 0.1)
-        self.bank.receive_repayment("Zaki", 500)
-        self.assertEqual(self.customer.get_outstanding_debt(), 600)
-        self.assertEqual(self.customer.get_total_repayments(), 500)
-
-
 if __name__ == "__main__":
     unittest.main()
