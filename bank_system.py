@@ -65,6 +65,11 @@ class Bank:
         self.customers = set()
 
     def __validate_customer_exists(self, customer: Customer) -> None:
+        """
+            checks if a customer exists in the bank
+        :param customer:
+        :return:
+        """
         if customer not in self.customers:
             raise ValueError("Customer does not exist")
 
@@ -81,7 +86,7 @@ class Bank:
             lend an amount to customer
         :param customer:
         :param amount:
-        :param interest_rate:
+        :param interest_rate: a percentage written as a decimal (0.1 for 10%)
         :return:
         """
         self.__validate_customer_exists(customer)
